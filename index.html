@@ -1,0 +1,128 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+  
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <title> Fibonacci is a g </title>
+</head>
+<body>
+<canvas id = "canvas" width = "1000" height = "700" style = " "></canvas>
+
+
+
+<style>
+#canvas {
+	position: absolute;
+ 	margin-left: auto;
+    margin-right: auto;
+    left:0;
+    right:0;
+    background: white;
+
+}
+
+</style>
+
+<script>
+// variables
+var canvas = document.getElementById("canvas"),
+    ctx = canvas.getContext("2d"),
+    fps = 60;
+
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+
+var dot= {
+    x: (canvas.width/2)-(5),
+    y: canvas.height-10,
+    width: 5,
+    height: 5, 
+    vx: 2,
+    vy: 2,
+    color: "#0E0016",
+    angle: (3 * Math.PI / 180),
+    counter: 0,
+    changeColor: function() {
+        var colors = ["#172E5F", "#44749D", "#CDE8FF", "#ECF1FA", "#E7D7EF", "#FB80F1", "#CB93E7", "#7B13AF", "#753273", "#330C46"]
+        if(this.counter>colors.length) {
+            this.counter = 0;
+        }
+        else {
+            this.counter++;
+        }
+        this.color = colors[this.counter];
+    },
+    update: function() {
+        
+        this.angle+=random(0.39, 0.39) * Math.PI / 180;
+
+
+       
+        this.x =this.x+random(2, 2)*Math.exp(0.008*-this.angle)*Math.cos(-this.angle);
+        this.y =this.y+random(2, 2)*Math.exp(0.008*-this.angle)*Math.sin(-this.angle);
+       
+
+
+    },
+    draw: function() {
+
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+}
+
+// keypress event
+
+document.addEventListener('keydown', function(event) {
+  // check if space is pressed
+  if(event.keyCode == 32 || event.which == 32) {
+    reset();
+  }
+
+});
+
+// draw and update
+function reset() {
+     ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+     dot.x = (canvas.width/2) - (5);
+     dot.y = canvas.height-10;
+     dot.angle = (3 * Math.PI / 180);
+}
+
+
+function draw() {
+    dot.draw();
+}
+
+function update() {
+    dot.update();
+
+}
+
+function tick() {
+
+    update();
+    draw();
+
+ 
+}
+
+function change() {
+
+    dot.changeColor();
+}
+
+setInterval(change, 100)
+setInterval(tick, 1);
+
+</script>
+
+</body>
+</html>
